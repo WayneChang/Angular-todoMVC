@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { environment } from '../environments/environment';
-import {  } from './list.service';
+import { ListService } from './list.service';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +9,10 @@ import {  } from './list.service';
 })
 export class AppComponent {
   title = 'doggy-training-test';
+
+  constructor( private list: ListService) {
+    this.list.getData().subscribe( value => {
+      console.log(value);
+    })
+  }
 }
