@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { ListService } from './list.service';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +9,26 @@ import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 })
 export class AppComponent {
   title = 'doggy-training-test';
+  @Output() updateTo = new EventEmitter();
+  lists: any = [];
 
   constructor( private list: ListService) {
-    this.list.getData().subscribe( value => {
-      console.log(value);
-    })
+  }
+
+  update() {
+    this.list.getData().pipe(
+      map((val: any) => {
+        return val.map((item: any) => {
+            return {
+              id: item.id,
+              title: item.title,
+              isDone: item.isDone,
+              toDo: false
+            };
+          });
+      })
+    ).subscribe( value => {
+      this.lists = value;
+    });
   }
 }

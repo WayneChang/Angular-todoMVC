@@ -1,1 +1,10 @@
-<p>list works!</p>
+<ul class="todo-list">
+  <li *ngFor="let item of lists; let index = index" [class.complete]="item.isDone" [class.editing]="item.toDo">
+    <div class="view">
+      <input class="toggle" type="checkbox">
+      <label (dblclick)="editing(item)">{{item.title}}</label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" *ngIf="item.toDo" [(ngModel)]="newInput" (keyup.enter)="enterEdit(item, $event.target.value)" (blur)="blurEdit(item)">
+  </li>
+</ul>

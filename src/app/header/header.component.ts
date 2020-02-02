@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ListService } from '../list.service';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +7,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  inputData: string;
+  @Output() updateData = new EventEmitter();
 
-  constructor() { }
+  constructor(private list: ListService) { }
 
   ngOnInit() {
   }
 
+  postData(string: string) {
+    this.list.postData(string).subscribe(
+      result => {
+        this.inputData = '';
+        this.updateData.emit();
+      },
+      error => {
+        alert('add fail');
+      },
+      () => {
+      }
+    );
+  }
 }
