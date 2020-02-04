@@ -1,5 +1,6 @@
 <header class="header">
   <h1>todos</h1>
   <input class="new-todo" placeholder="What needs to be done?" [(ngModel)]="inputData" (keyup.enter)="postData($event.target.value)">
-  <input id="toggle-all" class="toggle-all" type="checkbox">
+
+  <input id="toggle-all" class="toggle-all" type="checkbox"><label (click)="toggleAll.emit()"></label>
 </header>

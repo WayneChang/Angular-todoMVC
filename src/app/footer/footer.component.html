@@ -1,4 +1,4 @@
 <footer class="footer">
-  <span class="todo-count"><strong></strong> left</span>
-  <button class="clear-completed">Clear completed</button>
+<span class="todo-count"><strong *ngIf="(totalFinish !== 0)">Complete {{totalFinish}}, </strong>{{unFinish}} left</span>
+  <button class="clear-completed" (click)="clearFinish.emit()">Clear completed</button>
 </footer>

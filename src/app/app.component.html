@@ -1,7 +1,7 @@
 <section class="todoapp">
   <section class="main">
-    <app-header (updateData)="update()"></app-header>
-    <app-list [updateTo]="lists"></app-list>
+    <app-header (updateData)="update()" (toggleAll)="toggleAll()"></app-header>
+    <app-list (toggleDoneEm)="toggleReflesh()" [updateTo]="lists"></app-list>
   </section>
-  <app-footer></app-footer>
+  <app-footer (clearFinish)="clearFinish()" [totalItem]="lists"></app-footer>
 </section>

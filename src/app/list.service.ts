@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -42,5 +41,30 @@ export class ListService {
       title: s,
       // isDone: item.isDone
     });
+  }
+
+  deleteData(item: any) {
+    return this.https.delete(`${environment.api}` + '/' + item.id);
+  }
+
+  deleteFinish(item: any) {
+    this.https.delete(`${environment.api}` + '/' + item.id).subscribe();
+    return this.getData();
+  }
+
+  toggleDone(item: any) {
+    // console.log(item.isDone);
+    return this.https.patch(`${environment.api}` + '/' + item.id, {isDone: !item.isDone});
+  }
+
+  toggleAll() {
+    // console.log(item.isDone);
+    this.getData().subscribe(
+      (value: Array<any>) => {
+        value.forEach((val: any) => {
+          this.https.patch(`${environment.api}` + '/' + val.id, {isDone: true}).subscribe();
+        });
+      }
+    );
   }
 }

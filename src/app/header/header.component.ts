@@ -9,6 +9,7 @@ import { ListService } from '../list.service';
 export class HeaderComponent implements OnInit {
   inputData: string;
   @Output() updateData = new EventEmitter();
+  @Output() toggleAll = new EventEmitter();
 
   constructor(private list: ListService) { }
 

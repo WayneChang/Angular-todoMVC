@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { ListService } from '../list.service';
 import { map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
+import { } from 'events';
 
 @Component({
   selector: 'app-list',
@@ -12,32 +13,17 @@ export class ListComponent implements OnInit, OnChanges {
   lists: any;
   newInput: any;
   @Input() updateTo: any;
+  @Output() toggleDoneEm = new EventEmitter();
 
   constructor(private list: ListService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log(changes.updateTo.currentValue);
+    console.log('list' + changes.updateTo.currentValue);
     this.lists = changes.updateTo.currentValue;
   }
 
   ngOnInit() {
-    this.list.getData().pipe(
-      map((val: any) => {
-        console.log(val);
-        return val.map( (item: any) => {
-          console.log(item);
-          return {
-            id: item.id,
-            title: item.title,
-            isDone: item.isDone,
-            toDo: false
-          };
-        });
-      })
-    ).subscribe( value => {
-      // console.log(value);
-      this.lists = value;
-    });
+    this.refleshData();
   }
 
   editing(item: any) {
@@ -53,23 +39,7 @@ export class ListComponent implements OnInit, OnChanges {
         alert('add fail');
       },
       () => {
-        this.list.getData().pipe(
-          map((val: any) => {
-            console.log(val);
-            return val.map( (item: any) => {
-              console.log(item);
-              return {
-                id: item.id,
-                title: item.title,
-                isDone: item.isDone,
-                toDo: false
-              };
-            });
-          })
-        ).subscribe( value => {
-          // console.log(value);
-          this.lists = value;
-        });
+        this.refleshData();
       }
     );
     item.toDo = false;
@@ -79,5 +49,42 @@ export class ListComponent implements OnInit, OnChanges {
     // console.log(item);
     // this.list.patchData(item);
     item.toDo = false;
+  }
+
+  deleteData(item: any) {
+    this.list.deleteData(item).subscribe(
+      () => {
+        this.refleshData();
+      }
+    );
+  }
+
+  toggleDone(item: any) {
+    this.list.toggleDone(item).subscribe(
+      () => {
+        this.refleshData();
+        this.toggleDoneEm.emit();
+      }
+    );
+  }
+
+  refleshData() {
+    this.list.getData().pipe(
+      map((val: any) => {
+        // console.log(val);
+        return val.map( (item: any) => {
+          // console.log(item);
+          return {
+            id: item.id,
+            title: item.title,
+            isDone: item.isDone,
+            toDo: false
+          };
+        });
+      })
+    ).subscribe( value => {
+      // console.log(value);
+      this.lists = value;
+    });
   }
 }

@@ -1,10 +1,10 @@
 <ul class="todo-list">
   <li *ngFor="let item of lists; let index = index" [class.complete]="item.isDone" [class.editing]="item.toDo">
     <div class="view">
-      <input class="toggle" type="checkbox">
+      <input class="toggle" type="checkbox" (click)="toggleDone(item)" [checked]="item.isDone">
       <label (dblclick)="editing(item)">{{item.title}}</label>
-      <button class="destroy"></button>
+      <button class="destroy" (click)="deleteData(item)"></button>
     </div>
-    <input class="edit" *ngIf="item.toDo" [(ngModel)]="newInput" (keyup.enter)="enterEdit(item, $event.target.value)" (blur)="blurEdit(item)">
+    <input class="edit" *ngIf="item.toDo" [(ngModel)]="item.title" (keyup.esc)="blurEdit(item)" (keyup.enter)="enterEdit(item, $event.target.value)" (blur)="blurEdit(item)">
   </li>
 </ul>
