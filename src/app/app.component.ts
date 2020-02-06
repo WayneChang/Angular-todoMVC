@@ -88,14 +88,7 @@ export class AppComponent {
           this.list.deleteData(val).subscribe();
         }
       });
+      this.update();
     });
-    // console.log(this.lists);
-    // this.lists.forEach(element => {
-    //   if (element.isDone) {
-    //     // this.list.deleteData(element.id);
-    //     console.log(element.id);
-    //   }
-    // });
-    this.update();
   }
 }
